@@ -1,0 +1,90 @@
+'''	
+2차원 배열에 값을 입력받아
+학생별, 과목별 총점, 평균값 출력하는 코딩 수정
+특정학생의 성명, 과목, 값을 입력받아 배열의 특정값을 변경하는 기능추가
+2개 기능을 메뉴 "전체 학생 출력", "특정학생 성적변경" 처리하기
+'''
+
+list1 = []  # 개별 학생 정보 저장 리스트
+list2 = []  # 모든 학생 정보 저장 리스트
+
+# 전체 학생 출력
+def display_results():
+    result = ""
+    for i in range(3):
+        result += "\n%d번째 학생" % (i + 1)
+        result += "\n%5s" % list2[i][0]
+        hap = sum(list2[i][1:])  # 과목 점수 합계 계산
+        for j in range(1, 4):
+            result += " %.3d" % list2[i][j]
+        result += " --> 합: %3d, 평균: %3.1f\n" % (hap, hap / 3)
+
+    # 과목별 총점 및 평균 계산
+    subject_totals = [0, 0, 0]  # 국어, 영어, 수학 총점 초기화
+    for student in list2:
+        for j in range(3):
+            subject_totals[j] += student[j + 1]
+
+    result += "\n과목별 총점 및 평균"
+    subjects = ["국어", "영어", "수학"]
+    for i in range(3):
+        result += "\n%s 총점: %3d, 평균: %3.1f" % (subjects[i], subject_totals[i], subject_totals[i] / 3)
+
+    print(result)
+
+# 성적 변경
+def modify_grade():
+    name = input("성적 변경 - 이름: ")
+    subject = input("성적 변경 - 과목 (국어/영어/수학): ")
+    new_grade = int(input("성적 변경 - 새로운 점수: "))
+    
+    # 학생이 존재하는지 확인
+    student_found = False
+    for student in list2:
+        if student[0] == name:
+            student_found = True
+            if subject == "국어":
+                student[1] = new_grade
+            elif subject == "영어":
+                student[2] = new_grade
+            elif subject == "수학":
+                student[3] = new_grade
+            else:
+                print("잘못된 과목입니다.")
+                return
+            print("%s 학생의 %s 성적이 %d로 변경되었습니다." % (name, subject, new_grade))
+            break
+    
+    if not student_found:
+        print("%s 학생을 찾을 수 없습니다." % name)
+
+
+for i in range(3):
+    list1.append(input("이름 :"))
+    list1.append(int(input("국어 :")))
+    list1.append(int(input("영어 :")))
+    list1.append(int(input("수학 :")))
+    
+    list2.append(list(list1))  # list1의 복사본을 저장
+    list1.clear()  # 기존 데이터 초기화
+
+while True:
+    print("\n1. 전체 학생 출력 ")
+    print("2. 성적 변경")
+    print("3. 종료")
+        
+    choice = input("원하는 작업을 선택하세요 (1/2/3): ")
+        
+    if choice == "1":
+        display_results()
+    elif choice == "2":
+        modify_grade()
+    elif choice == "3":
+        print("프로그램을 종료합니다.")
+        break
+    else:
+        print("잘못된 선택입니다. 다시 입력해주세요.")
+
+
+
+
